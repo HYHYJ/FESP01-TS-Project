@@ -1,16 +1,14 @@
 import "./todoList.css";
-import useTodoList, { CheckboxChangeEvent } from "./useTodoList";
+import useTodoList from "./useTodoList";
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import { linkTo } from "../../Router";
 import sortItems from "../../utils/sortItems";
-import useSelectTodoList, { TodoInfo } from "../../apis/useSelectTodoList";
-import handleDateForm from "../../utils/handleDateForm";
+import useSelectTodoList from "../../apis/useSelectTodoList";
 
 const TodoList = async function () {
   //함수
-  const { changeCheckboxState, dropTodo, clickCheckbox, appendTodo } =
-    useTodoList();
+  const { dropTodo, appendTodo } = useTodoList();
 
   //data
   let todoListData = await useSelectTodoList();
@@ -64,6 +62,31 @@ const TodoList = async function () {
   const contentNotDone = document.createElement("div");
   contentDone.setAttribute("id", "content-done");
   contentNotDone.setAttribute("id", "content-not-done");
+
+  //section title & count
+  const notDoneTitle = document.createElement("h2");
+  const notDoneTitleText = document.createTextNode("Todo");
+  notDoneTitle.appendChild(notDoneTitleText);
+  contentNotDone.appendChild(notDoneTitle);
+
+  const doneTitle = document.createElement("h2");
+  const doneTitleText = document.createTextNode("Done");
+  doneTitle.appendChild(doneTitleText);
+  contentDone.appendChild(doneTitle);
+
+  const countNotDoneSpan = document.createElement("span");
+  const countNotDoneText = document.createTextNode(
+    `해야 할 일: ${notDoneList.length}`
+  );
+  countNotDoneSpan.appendChild(countNotDoneText);
+  contentNotDone.appendChild(countNotDoneSpan);
+
+  const countDoneSpan = document.createElement("span");
+  const countDoneText = document.createTextNode(
+    `완료된 할 일: ${doneList.length}`
+  );
+  countDoneSpan.appendChild(countDoneText);
+  contentDone.appendChild(countDoneSpan);
 
   try {
     //todo 목록
