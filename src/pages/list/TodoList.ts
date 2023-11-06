@@ -17,6 +17,39 @@ const TodoList = async function () {
   let notDoneList = todoListData?.items.filter((el) => el.done == false) || [];
   let doneList = todoListData?.items.filter((el) => el.done == true) || [];
 
+  //최신순, 오래된순 정렬 함수
+  const sortTodoList = (e: Event) => {
+    let targetElement = e.target as HTMLInputElement;
+
+    if (targetElement.value === "createdAt_desc") {
+      notDoneList = sortItems({ items: notDoneList, order: "desc" });
+      doneList = sortItems({ items: doneList, order: "desc" });
+    } else {
+      notDoneList = sortItems({ items: notDoneList, order: "asc" });
+      doneList = sortItems({ items: doneList, order: "asc" });
+    }
+
+    // 기존 view에 있던 목록 삭제
+    const parentNotDone = document.getElementById(
+      "content-not-done"
+    ) as HTMLInputElement;
+    const parentDone = document.getElementById(
+      "content-done"
+    ) as HTMLInputElement;
+    parentNotDone.innerHTML = "";
+    parentDone.innerHTML = "";
+
+    // 정렬된 todo 목록 append
+    notDoneList?.forEach((todo) => {
+      appendTodo({ parentContent: contentNotDone, todo: todo });
+    });
+
+    // 정렬된 done 목록 append
+    doneList?.forEach((todo) => {
+      appendTodo({ parentContent: contentDone, todo: todo });
+    });
+  };
+
   //page
   const page = document.createElement("div");
   page.setAttribute("id", "page");
@@ -33,7 +66,7 @@ const TodoList = async function () {
   contentNotDone.setAttribute("id", "content-not-done");
 
   try {
-    // todo 목록
+    //todo 목록
     notDoneList?.forEach((todo) => {
       appendTodo({ parentContent: contentNotDone, todo: todo });
     });
@@ -43,51 +76,16 @@ const TodoList = async function () {
       appendTodo({ parentContent: contentDone, todo: todo });
     });
 
-    // 정렬
+    //정렬 - select
     const selectBox = document.createElement("select");
     selectBox.id = "sort-box";
 
-    //option
+    //정렬 - option
     const optionAsc = new Option("오래된순", "createdAt_desc");
     const optionDesc = new Option("최신순", "createdAt_asc");
-
     selectBox.appendChild(optionAsc);
-    //eventListener를 넣자
     selectBox.appendChild(optionDesc);
-
-    selectBox.addEventListener("change", (e) => {
-      let targetElement = e.target as HTMLInputElement;
-
-      if (targetElement.value === "createdAt_desc") {
-        notDoneList = sortItems({ items: notDoneList, order: "desc" });
-        doneList = sortItems({ items: doneList, order: "desc" });
-      } else {
-        notDoneList = [...sortItems({ items: notDoneList, order: "asc" })];
-        doneList = [...sortItems({ items: doneList, order: "asc" })];
-      }
-
-      // 기존 view에 있던 목록 삭제
-      const parentNotDone = document.getElementById(
-        "content-not-done"
-      ) as HTMLInputElement;
-      parentNotDone.innerHTML = ""; // 자식 노드 삭제
-
-      const parentDone = document.getElementById(
-        "content-done"
-      ) as HTMLInputElement;
-      parentDone.innerHTML = ""; // 자식 노드 삭제
-
-      // todo 목록
-      notDoneList?.forEach((todo) => {
-        appendTodo({ parentContent: contentNotDone, todo: todo });
-      });
-
-      //done 목록
-      doneList?.forEach((todo) => {
-        appendTodo({ parentContent: contentDone, todo: todo });
-      });
-    });
-
+    selectBox.addEventListener("change", sortTodoList);
     containerList.appendChild(selectBox);
 
     // drag & drop event 추가
