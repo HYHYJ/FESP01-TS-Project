@@ -29,22 +29,22 @@ const TodoList = async function () {
 
     // 기존 view에 있던 목록 삭제
     const parentNotDone = document.getElementById(
-      "content-not-done"
+      "content-not-done-ul"
     ) as HTMLInputElement;
     const parentDone = document.getElementById(
-      "content-done"
+      "content-done-ul"
     ) as HTMLInputElement;
     parentNotDone.innerHTML = "";
     parentDone.innerHTML = "";
 
     // 정렬된 todo 목록 append
     notDoneList?.forEach((todo) => {
-      appendTodo({ parentContent: contentNotDone, todo: todo });
+      appendTodo({ parentContent: contentNotDoneUl, todo: todo });
     });
 
     // 정렬된 done 목록 append
     doneList?.forEach((todo) => {
-      appendTodo({ parentContent: contentDone, todo: todo });
+      appendTodo({ parentContent: contentDoneUl, todo: todo });
     });
   };
 
@@ -88,15 +88,24 @@ const TodoList = async function () {
   countDoneSpan.appendChild(countDoneText);
   contentDone.appendChild(countDoneSpan);
 
+  //content ul
+  const contentNotDoneUl = document.createElement("ul");
+  contentNotDoneUl.id = "content-not-done-ul";
+  contentNotDone.appendChild(contentNotDoneUl);
+
+  const contentDoneUl = document.createElement("ul");
+  contentDoneUl.id = "content-done-ul";
+  contentDone.appendChild(contentDoneUl);
+
   try {
     //todo 목록
     notDoneList?.forEach((todo) => {
-      appendTodo({ parentContent: contentNotDone, todo: todo });
+      appendTodo({ parentContent: contentNotDoneUl, todo: todo });
     });
 
     //done 목록
     doneList?.forEach((todo) => {
-      appendTodo({ parentContent: contentDone, todo: todo });
+      appendTodo({ parentContent: contentDoneUl, todo: todo });
     });
 
     //정렬 - select

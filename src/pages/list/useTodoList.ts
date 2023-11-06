@@ -24,7 +24,7 @@ interface useTodoList {
     parentContent,
     todo,
   }: {
-    parentContent: HTMLDivElement;
+    parentContent: HTMLUListElement;
     todo: TodoInfo;
   }) => void;
 }
@@ -71,7 +71,7 @@ const useTodoList = (): useTodoList => {
     parentContent,
     todo,
   }: {
-    parentContent: HTMLDivElement;
+    parentContent: HTMLUListElement;
     todo: TodoInfo;
   }) => {
     //리스트

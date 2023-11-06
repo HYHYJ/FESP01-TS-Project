@@ -67,15 +67,15 @@
   padding: 10px 0;
 }
 
-.list #content-done > div,
-.list #content-not-done > div {
+.list #content-done ul > div,
+.list #content-not-done ul > div {
   background-color: #ffffff;
   padding: 10px;
   border-radius: 8px;
   margin-bottom: 10px;
 }
-.list #content-done > div a,
-.list #content-not-done > div a {
+.list #content-done ul > div a,
+.list #content-not-done ul > div a {
   text-decoration-line: none;
   color: #111;
 }
