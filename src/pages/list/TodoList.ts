@@ -126,6 +126,40 @@ const TodoList = async function () {
     //   countNotDoneElement.textContent = `해야할 할 일 ${countNotDone}개`;
     // }
 
+    //TODO:임시코드
+
+    //     //상세페이지 이동을 위한 a태그 속성
+    const li = document.createElement("div");
+    li.draggable = true;
+    li.id = todoListData!.items[0]._id;
+    // li.ondragstart = (e) => {
+    //   e.dataTransfer.setData("text/plain", e.target.id);
+    // };
+
+    const title = document.createTextNode(todoListData!.items[0].title);
+    const todoInfoLink = document.createElement("a");
+    todoInfoLink.setAttribute("id", todoListData!.items[0]._id);
+    todoInfoLink.setAttribute("href", `info?_id=${todoListData!.items[0]._id}`);
+    todoInfoLink.appendChild(title);
+    todoInfoLink.addEventListener("click", function (event) {
+      event.preventDefault();
+      linkTo(todoInfoLink.getAttribute("href"));
+    });
+
+    // todo item의 checkbox 속성
+    const checkbox = document.createElement("input");
+    checkbox.setAttribute("id", todoListData!.items[0]._id);
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.setAttribute("name", "checkbox");
+    // checkbox.checked = todoListData!.items[0].done;
+    // li.appendChild(checkbox);
+    // li.appendChild(todoInfoLink);
+    // checkbox.addEventListener("click", async (e) => {
+    //   changeCheckboxState(e);
+    //   todoListData = await useSelectTodoList();
+    //   makeTodolist(todoListData?.items);
+    // });
+
     //등록 버튼
     const btnRegist = document.createElement("button");
     const btnTitle = document.createTextNode("등록");
@@ -135,6 +169,9 @@ const TodoList = async function () {
     btnRegist.addEventListener("click", () => {
       linkTo("regist");
     });
+
+    li.appendChild(todoInfoLink);
+    containerList.appendChild(li);
   } catch (err) {
     const error = document.createTextNode("일시적인 오류 발생");
     page.appendChild(error);

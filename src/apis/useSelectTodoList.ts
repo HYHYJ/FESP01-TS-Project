@@ -1,6 +1,6 @@
 import axios from "axios";
 type todoInfo = {
-  _id: number;
+  _id: string;
   title: string;
   done: boolean;
   createdAt: string;
