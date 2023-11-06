@@ -1,15 +1,16 @@
 import axios from "axios";
-type todoInfo = {
-  _id: string;
+type TodoInfo = {
+  _id: number;
   title: string;
-  done: boolean;
+  content: string;
+  done: boolean | true | false;
   createdAt: string;
   updatedAt: string;
 };
 
-type todoList = {
+type TodoList = {
   ok: number;
-  items: todoInfo[];
+  items: TodoInfo[];
   pagination: {
     page: number;
     limit: number;
@@ -21,10 +22,10 @@ type todoList = {
 export default async function useSelectTodoList() {
   try {
     const response = await axios("http://localhost:33088/api/todolist");
-    return response.data as todoList;
+    return response.data as TodoList;
   } catch (err) {
     console.error(err);
   }
 }
 
-export type { todoInfo, todoList };
+export type { TodoInfo, TodoList };

@@ -1,39 +1,115 @@
 import "./todoList.css";
-import useTodoList from "./useTodoList";
+import useTodoList, { CheckboxChangeEvent } from "./useTodoList";
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import { linkTo } from "../../Router";
 import sortItems from "../../utils/sortItems";
 import useSelectTodoList from "../../apis/useSelectTodoList";
-import useUpdateTodoInfoDone from "../../apis/useUpdateTodoInfoDone";
+import handleDateForm from "../../utils/handleDateForm";
 
 const TodoList = async function () {
-  const { changeCheckboxState, dropTodo } = useTodoList();
-  let todoListData = await useSelectTodoList();
+  //함수
+  const { changeCheckboxState, dropTodo, clickCheckbox } = useTodoList();
 
+  //data
+  let todoListData = await useSelectTodoList();
+  let notDoneList = todoListData?.items.filter((el) => el.done == false);
+  let doneList = todoListData?.items.filter((el) => el.done == true);
+
+  //page
   const page = document.createElement("div");
   page.setAttribute("id", "page");
   page.className = "list";
 
+  //main
   const containerList = document.createElement("div");
   containerList.setAttribute("id", "container-list");
 
+  //section
   const contentDone = document.createElement("div");
   const contentNotDone = document.createElement("div");
   contentDone.setAttribute("id", "content-done");
   contentNotDone.setAttribute("id", "content-not-done");
 
   try {
+    // todo 목록
+    notDoneList?.forEach((todo) => {
+      const li = document.createElement("div");
+      li.draggable = true;
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = `${todo._id}`;
+      checkbox.addEventListener("click", clickCheckbox);
+      li.appendChild(checkbox);
+
+      const a = document.createElement("a");
+      a.id = `${todo._id}`;
+      a.href = `info?_id=${todoListData!.items[0]._id}`;
+
+      const text = document.createTextNode(todo.title);
+      const createdAt = document.createTextNode(
+        `(${handleDateForm(todo.createdAt)})`
+      );
+      a.appendChild(text);
+      a.appendChild(createdAt);
+
+      li.appendChild(a);
+      contentNotDone.appendChild(li);
+    });
+
+    //done 목록
+    doneList?.forEach((todo) => {
+      const li = document.createElement("div");
+      li.draggable = true;
+
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.id = `${todo._id}`;
+      checkbox.checked = true;
+      checkbox.addEventListener("click", clickCheckbox);
+      li.appendChild(checkbox);
+
+      const a = document.createElement("a");
+      a.id = `${todo._id}`;
+      a.href = `info?_id=${todoListData!.items[0]._id}`;
+
+      const text = document.createTextNode(todo.title);
+      const createdAt = document.createTextNode(
+        `(${handleDateForm(todo.createdAt)})`
+      );
+      a.appendChild(text);
+      a.appendChild(createdAt);
+
+      li.appendChild(a);
+      contentDone.appendChild(li);
+    });
+
+    // 정렬
+    const selectBox = document.createElement("select");
+    selectBox.id = "sort-box";
+
+    //option
+    const optionAsc = new Option("최신순", "createdAt_desc");
+    const optionDesc = new Option("오래된순", "createdAt_asc");
+
+    selectBox.appendChild(optionAsc);
+    selectBox.appendChild(optionDesc);
+
+    containerList.appendChild(selectBox);
+
+    //drop
+
     // let currentDropdown = "createdAt_asc";
 
     // function createDropdown(parentElement) {
-    //   const sortDropdown = document.createElement("select");
+    // const sortDropdown = document.createElement("select");
 
-    //   const option1 = new Option("생성날짜 오래된순", "createdAt_desc");
-    //   const option2 = new Option("생성날짜 최신순", "createdAt_asc");
+    // const option1 = new Option("생성날짜 오래된순", "createdAt_desc");
+    // const option2 = new Option("생성날짜 최신순", "createdAt_asc");
 
-    //   sortDropdown.appendChild(option1);
-    //   sortDropdown.appendChild(option2);
+    // sortDropdown.appendChild(option1);
+    // sortDropdown.appendChild(option2);
 
     //   sortDropdown.value = currentDropdown;
 
@@ -126,40 +202,6 @@ const TodoList = async function () {
     //   countNotDoneElement.textContent = `해야할 할 일 ${countNotDone}개`;
     // }
 
-    //TODO:임시코드
-
-    //     //상세페이지 이동을 위한 a태그 속성
-    const li = document.createElement("div");
-    li.draggable = true;
-    li.id = todoListData!.items[0]._id;
-    // li.ondragstart = (e) => {
-    //   e.dataTransfer.setData("text/plain", e.target.id);
-    // };
-
-    const title = document.createTextNode(todoListData!.items[0].title);
-    const todoInfoLink = document.createElement("a");
-    todoInfoLink.setAttribute("id", todoListData!.items[0]._id);
-    todoInfoLink.setAttribute("href", `info?_id=${todoListData!.items[0]._id}`);
-    todoInfoLink.appendChild(title);
-    todoInfoLink.addEventListener("click", function (event) {
-      event.preventDefault();
-      linkTo(todoInfoLink.getAttribute("href"));
-    });
-
-    // todo item의 checkbox 속성
-    const checkbox = document.createElement("input");
-    checkbox.setAttribute("id", todoListData!.items[0]._id);
-    checkbox.setAttribute("type", "checkbox");
-    checkbox.setAttribute("name", "checkbox");
-    // checkbox.checked = todoListData!.items[0].done;
-    // li.appendChild(checkbox);
-    // li.appendChild(todoInfoLink);
-    // checkbox.addEventListener("click", async (e) => {
-    //   changeCheckboxState(e);
-    //   todoListData = await useSelectTodoList();
-    //   makeTodolist(todoListData?.items);
-    // });
-
     //등록 버튼
     const btnRegist = document.createElement("button");
     const btnTitle = document.createTextNode("등록");
@@ -169,9 +211,6 @@ const TodoList = async function () {
     btnRegist.addEventListener("click", () => {
       linkTo("regist");
     });
-
-    li.appendChild(todoInfoLink);
-    containerList.appendChild(li);
   } catch (err) {
     const error = document.createTextNode("일시적인 오류 발생");
     page.appendChild(error);
