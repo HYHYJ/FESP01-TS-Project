@@ -1,5 +1,6 @@
 import useSelectTodoList, { TodoInfo } from "../../apis/useSelectTodoList";
 import useUpdateTodoInfoDone from "../../apis/useUpdateTodoInfoDone";
+import handleDateForm from "../../utils/handleDateForm";
 type CheckboxChangeEvent = {
   target: HTMLInputElement;
 } & Event &
@@ -19,6 +20,13 @@ interface useTodoList {
   changeCheckboxState: (e: CheckboxChangeEvent) => void;
   dropTodo: ({ e, isDone }: DropTodo) => void;
   clickCheckbox: (e: MouseEvent) => Promise<void>;
+  appendTodo: ({
+    parentContent,
+    todo,
+  }: {
+    parentContent: HTMLDivElement;
+    todo: TodoInfo;
+  }) => void;
 }
 
 const useTodoList = (): useTodoList => {
@@ -53,7 +61,51 @@ const useTodoList = (): useTodoList => {
     //rerender
     location.reload();
   };
-  return { changeCheckboxState, dropTodo, clickCheckbox };
+
+  /**
+   *   투두 리스트를 만들어주는 함수
+   * @param parentContent todo list 가 append 될 section
+   * @param todo todo의 data
+   */
+  const appendTodo = ({
+    parentContent,
+    todo,
+  }: {
+    parentContent: HTMLDivElement;
+    todo: TodoInfo;
+  }) => {
+    //리스트
+    const li = document.createElement("div");
+    li.className = `todo-li-${todo._id}`;
+    li.draggable = true;
+
+    //체크박스
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = `${todo._id}`;
+    checkbox.checked = todo.done;
+    checkbox.addEventListener("click", clickCheckbox);
+    li.appendChild(checkbox);
+
+    //링크
+    const a = document.createElement("a");
+    a.id = `${todo._id}`;
+    a.href = `info?_id=${todo._id}`;
+
+    //링크가 걸리는 텍스트
+    const text = document.createTextNode(todo.title);
+    const createdAt = document.createTextNode(
+      `(${handleDateForm(todo.createdAt)})`
+    );
+    a.appendChild(text);
+    a.appendChild(createdAt);
+
+    //contentDone/contentNotDone section을 결정하는 부분
+    li.appendChild(a);
+    parentContent.appendChild(li);
+  };
+
+  return { changeCheckboxState, dropTodo, clickCheckbox, appendTodo };
 };
 
 export default useTodoList;

@@ -9,7 +9,8 @@ import handleDateForm from "../../utils/handleDateForm";
 
 const TodoList = async function () {
   //함수
-  const { changeCheckboxState, dropTodo, clickCheckbox } = useTodoList();
+  const { changeCheckboxState, dropTodo, clickCheckbox, appendTodo } =
+    useTodoList();
 
   //data
   let todoListData = await useSelectTodoList();
@@ -31,60 +32,15 @@ const TodoList = async function () {
   contentDone.setAttribute("id", "content-done");
   contentNotDone.setAttribute("id", "content-not-done");
 
-  /**
-   *   투두 리스트를 만들어주는 함수
-   * @param isContentDone todo.done이 true/false
-   * @param todo todo의 data
-   */
-  const appendTodo = ({
-    isContentDone,
-    todo,
-  }: {
-    isContentDone: boolean;
-    todo: TodoInfo;
-  }) => {
-    //리스트
-    const li = document.createElement("div");
-    li.className = `todo-li-${todo._id}`;
-    li.draggable = true;
-
-    //체크박스
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.id = `${todo._id}`;
-    isContentDone && (checkbox.checked = true);
-    checkbox.addEventListener("click", clickCheckbox);
-    li.appendChild(checkbox);
-
-    //링크
-    const a = document.createElement("a");
-    a.id = `${todo._id}`;
-    a.href = `info?_id=${todoListData!.items[0]._id}`;
-
-    //링크가 걸리는 텍스트
-    const text = document.createTextNode(todo.title);
-    const createdAt = document.createTextNode(
-      `(${handleDateForm(todo.createdAt)})`
-    );
-    a.appendChild(text);
-    a.appendChild(createdAt);
-
-    //contentDone/contentNotDone section을 결정하는 부분
-    li.appendChild(a);
-    isContentDone
-      ? contentDone.appendChild(li)
-      : contentNotDone.appendChild(li);
-  };
-
   try {
     // todo 목록
     notDoneList?.forEach((todo) => {
-      appendTodo({ isContentDone: false, todo: todo });
+      appendTodo({ parentContent: contentNotDone, todo: todo });
     });
 
     //done 목록
     doneList?.forEach((todo) => {
-      appendTodo({ isContentDone: true, todo: todo });
+      appendTodo({ parentContent: contentDone, todo: todo });
     });
 
     // 정렬
@@ -123,12 +79,12 @@ const TodoList = async function () {
 
       // todo 목록
       notDoneList?.forEach((todo) => {
-        appendTodo({ isContentDone: false, todo: todo });
+        appendTodo({ parentContent: contentNotDone, todo: todo });
       });
 
       //done 목록
       doneList?.forEach((todo) => {
-        appendTodo({ isContentDone: true, todo: todo });
+        appendTodo({ parentContent: contentDone, todo: todo });
       });
     });
 
