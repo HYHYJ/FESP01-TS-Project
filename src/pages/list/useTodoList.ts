@@ -52,6 +52,7 @@ const useTodoList = (): useTodoList => {
     if (e !== null) {
       const id = e.dataTransfer!.getData("text/plain");
       await useUpdateTodoInfoDone({ id, isDone });
+      location.reload();
     }
   };
 
@@ -76,8 +77,12 @@ const useTodoList = (): useTodoList => {
   }) => {
     //리스트
     const li = document.createElement("div");
-    li.className = `todo-li-${todo._id}`;
+    li.id = `${todo._id}`;
     li.draggable = true;
+    li.ondragstart = (e) => {
+      const targetEl = e.target as HTMLInputElement;
+      e.dataTransfer!.setData("Text", targetEl.id);
+    };
 
     //체크박스
     const checkbox = document.createElement("input");

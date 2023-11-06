@@ -126,69 +126,6 @@ const TodoList = async function () {
     contentNotDone.ondragover = (e) => e.preventDefault();
     contentNotDone.ondrop = (e) => dropTodo({ e, isDone: false });
 
-    // createDropdown(containerList);
-    // function makeTodolist(items) {
-    //   contentDone.innerHTML = "";
-    //   contentNotDone.innerHTML = "";
-    //   createSectionTitle("Done", contentDone);
-    //   createSectionTitle("Todo", contentNotDone);
-
-    //   let countNotDone = 0;
-    //   let countDone = 0;
-
-    //   const countDoneElement = document.createElement("span");
-    //   const countNotDoneElement = document.createElement("span");
-    //   contentDone.appendChild(countDoneElement);
-    //   contentNotDone.appendChild(countNotDoneElement);
-
-    // sortItems(items).forEach(function (item) {
-    //   const title = document.createTextNode(item.title);
-
-    //   const li = document.createElement("div");
-    //   li.draggable = true;
-    //   li.id = item._id;
-    //   li.ondragstart = (e) => {
-    //     e.dataTransfer.setData("text/plain", e.target.id);
-    //   };
-
-    // //상세페이지 이동을 위한 a태그 속성
-    // const todoInfoLink = document.createElement("a");
-    // todoInfoLink.setAttribute("id", item._id);
-    // todoInfoLink.setAttribute("href", `info?_id=${item._id}`);
-    // todoInfoLink.appendChild(title);
-    // todoInfoLink.addEventListener("click", function (event) {
-    //   event.preventDefault();
-    //   linkTo(todoInfoLink.getAttribute("href"));
-    // });
-
-    //     // todo item의 checkbox 속성
-    //     const checkbox = document.createElement("input");
-    //     checkbox.setAttribute("id", item._id);
-    //     checkbox.setAttribute("type", "checkbox");
-    //     checkbox.setAttribute("name", "checkbox");
-    //     checkbox.setAttribute("checked", false);
-    //     checkbox.checked = item.done;
-    //     li.appendChild(checkbox);
-    //     li.appendChild(todoInfoLink);
-    //     checkbox.addEventListener("click", async (e) => {
-    //       changeCheckboxState(e);
-    //       todoListData = await useSelectTodoList();
-    //       makeTodolist(todoListData?.items);
-    //     });
-
-    //     if (item.done) {
-    //       contentDone.appendChild(li);
-    //       countDone++;
-    //     } else {
-    //       contentNotDone.appendChild(li);
-    //       countNotDone++;
-    //     }
-    //   });
-
-    //   countDoneElement.textContent = `완료된 할 일 ${countDone}개`;
-    //   countNotDoneElement.textContent = `해야할 할 일 ${countNotDone}개`;
-    // }
-
     //등록 버튼
     const btnRegist = document.createElement("button");
     const btnTitle = document.createTextNode("등록");
