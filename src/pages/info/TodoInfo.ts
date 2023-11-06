@@ -6,7 +6,7 @@ import { linkTo } from "../../Router";
 import handleDateForm from "../../utils/handleDateForm";
 import getId from "../../utils/getId";
 import useSelectTodoInfo from "../../apis/useSelectTodoInfo";
-import useUpdateTodoInfo2 from "../../apis/useUpdateTodoInfo";
+import useUpdateTodoInfo from "../../apis/useUpdateTodoInfo";
 
 const TodoInfo = async function (): Promise<HTMLElement> {
   //주소에서 id 가져오기
@@ -67,7 +67,7 @@ const TodoInfo = async function (): Promise<HTMLElement> {
   checkboxDetail.checked = item.done as boolean;
   infoContentsSection.appendChild(checkboxDetail);
   checkboxDetail.addEventListener("click", () =>
-    useUpdateTodoInfo2({ ...(item as TodoItem), done: checkboxDetail.checked })
+    useUpdateTodoInfo({ ...(item as TodoItem), done: checkboxDetail.checked })
   );
   //수정하기 버튼
   const btnModify = document.createElement("button");
