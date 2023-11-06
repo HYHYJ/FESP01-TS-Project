@@ -13,8 +13,8 @@ const TodoList = async function () {
 
   //data
   let todoListData = await useSelectTodoList();
-  let notDoneList = todoListData?.items.filter((el) => el.done == false);
-  let doneList = todoListData?.items.filter((el) => el.done == true);
+  let notDoneList = todoListData?.items.filter((el) => el.done == false) || [];
+  let doneList = todoListData?.items.filter((el) => el.done == true) || [];
 
   //page
   const page = document.createElement("div");
@@ -90,11 +90,29 @@ const TodoList = async function () {
     selectBox.id = "sort-box";
 
     //option
-    const optionAsc = new Option("최신순", "createdAt_desc");
-    const optionDesc = new Option("오래된순", "createdAt_asc");
-
+    const optionAsc = new Option("오래된순", "createdAt_desc");
+    const optionDesc = new Option("최신순", "createdAt_asc");
+    
     selectBox.appendChild(optionAsc);
+    //eventListener를 넣자
     selectBox.appendChild(optionDesc);
+
+    selectBox.addEventListener('change', (e)=>{
+      let targetElement = e.target as HTMLInputElement
+      if (targetElement.value === 'createdAt_desc'){
+        notDoneList = sortItems({items: notDoneList, order: 'desc'})
+        doneList = sortItems({items: doneList, order: 'desc'})
+        console.log('sorted')
+        console.log(notDoneList, doneList)
+      }
+      else { 
+        notDoneList = [...sortItems({items: notDoneList, order: 'asc'})]
+        doneList = [...sortItems({items: doneList, order: 'asc'})]
+        console.log('sorted')
+        console.log(notDoneList, doneList)
+      }
+    })
+
 
     containerList.appendChild(selectBox);
 
@@ -154,25 +172,25 @@ const TodoList = async function () {
     //   contentDone.appendChild(countDoneElement);
     //   contentNotDone.appendChild(countNotDoneElement);
 
-    //   sortItems(items).forEach(function (item) {
-    //     const title = document.createTextNode(item.title);
+      // sortItems(items).forEach(function (item) {
+      //   const title = document.createTextNode(item.title);
 
-    //     const li = document.createElement("div");
-    //     li.draggable = true;
-    //     li.id = item._id;
-    //     li.ondragstart = (e) => {
-    //       e.dataTransfer.setData("text/plain", e.target.id);
-    //     };
+      //   const li = document.createElement("div");
+      //   li.draggable = true;
+      //   li.id = item._id;
+      //   li.ondragstart = (e) => {
+      //     e.dataTransfer.setData("text/plain", e.target.id);
+      //   };
 
-    //     //상세페이지 이동을 위한 a태그 속성
-    //     const todoInfoLink = document.createElement("a");
-    //     todoInfoLink.setAttribute("id", item._id);
-    //     todoInfoLink.setAttribute("href", `info?_id=${item._id}`);
-    //     todoInfoLink.appendChild(title);
-    //     todoInfoLink.addEventListener("click", function (event) {
-    //       event.preventDefault();
-    //       linkTo(todoInfoLink.getAttribute("href"));
-    //     });
+        // //상세페이지 이동을 위한 a태그 속성
+        // const todoInfoLink = document.createElement("a");
+        // todoInfoLink.setAttribute("id", item._id);
+        // todoInfoLink.setAttribute("href", `info?_id=${item._id}`);
+        // todoInfoLink.appendChild(title);
+        // todoInfoLink.addEventListener("click", function (event) {
+        //   event.preventDefault();
+        //   linkTo(todoInfoLink.getAttribute("href"));
+        // });
 
     //     // todo item의 checkbox 속성
     //     const checkbox = document.createElement("input");
