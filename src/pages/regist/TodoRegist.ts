@@ -2,6 +2,7 @@ import "./todoRegist.css";
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import { linkTo } from "../../Router";
+import axios from 'axios';
 
 const TodoRegist = function () {
   const page = document.createElement("div");
@@ -10,9 +11,10 @@ const TodoRegist = function () {
 
   const handleRegist = (e: MouseEvent) => {
     e.preventDefault();
-
-    const titleValue = document.querySelector("#title-create")!.value;
-    const contentValue = document.querySelector("#content-create")!.value;
+    const titleElement = document.querySelector("#title-create") as HTMLInputElement
+    const titleValue = titleElement.value;
+    const contetElement = document.querySelector("#content-create") as HTMLInputElement
+    const contentValue = contetElement.value;
 
     //입력값 확인(이중확인)
     if (titleValue === "") {
