@@ -1,57 +1,138 @@
+
+
 .update {
   text-align: center;
 
   min-height: 100vh;
   display: grid;
   grid-template-rows: auto 1fr auto;
-
-  .form {
-    position: relative;
-    border: 1px solid #111;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-    border-radius: 0.2rem;
-    padding: 1rem;
+}
+.update header{
+    font-weight: 800;
   }
 
-  #update-detail {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
+  .update .form {
+    /* position: relative; */
+    /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
+    border-radius: 0.2rem;
+    padding: 30px 20px;
+    height: 95%;
+  }
+
+  .update header h1 {
+    font-weight: 800;
+    text-align: center;
+    padding: 20px 0;
+    font-size: x-large;
+  }
+
+  .update main {
+    /* top: 50%; */
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
+    /* display: grid;
+    grid-template-rows: 1fr 6fr 1fr; */
+    position: relative;
+    border: 1px solid #cfcfcf;
+    border-radius: 10px;
+    height: 100%;
+    /* padding: 30px 20px; */
+    /* padding: 30px 20px 10px 20px; */
+    /* display: grid; */
+    /* grid-template-rows: 8fr 2fr; */
+    /* width: 100vw; */
+    /* grid-row-gap: 20px; */
+  }
+
+  .update main #checkbox {
+    position: absolute;
+    right: 10px;
+    top: 1px;
+  }
+
+  .update #info-contents-section {
+    display: grid;
+    /* grid-template-columns: 1fr 1fr; */
+    /* grid-template-rows: 1fr 1fr 7fr 1fr; */
+    /* grid-row-gap: 8px; */
+  }
+
+  .update #update-detail {
+    /* display: flex; */
+    /* justify-content: center;
+    align-items: center; */
+    width: 35%;
     margin: 0 auto;
     text-align: right;
-    .title {
+  }
+
+  .update .title {
+      font-weight: bold;
       font-size: 1.2rem;
       text-align: left;
       margin-block: 0.8rem;
-    }
-    .title-update {
+  }
+ 
+
+  .update #update-detail .title-update {
       width: 96%;
       height: 1.2rem;
-    }
-    .content {
+      background-color: ghostwhite;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 40px 
+  }
+
+  .update #update-detail .content {
+    font-weight: bold;
       font-size: 1.2rem;
       text-align: left;
       margin-block: 0.8rem;
-    }
-    .content-update {
-      width: 96%;
-      height: 4rem;
-      margin-bottom: 1rem;
-    }
-    .cancel {
-      margin-left: 0.5rem;
-    }
+      
+  }
 
-    .checkbox {
+  .update  .content-update {
+      width: 96%;
+      height: 60%;
+      margin-bottom: 1rem;
+      background-color: ghostwhite;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+  }
+
+
+  .update #update-detail  .cancel {
+      
+      margin-left: 0.5rem;
+      background-color: lightcoral;
+      color:white;
+      cursor: pointer;
+      border-radius: 8px;
+      height: 70px;
+      width: 100px;
+      text-shadow: 2px 2px 2px gray;
+  }
+
+  .update #update-detail .updateButton{
+    margin-left: 0.5rem;
+    background-color: cadetblue;
+    color:white;
+    cursor: pointer;
+    border-radius: 8px;
+    height: 70px;
+    width: 100px;
+    text-shadow: 2px 2px 2px gray;
+  }
+
+  .update #update-detail  .checkbox {
       position: absolute;
       top: 1rem;
       right: 1rem;
       width: 1.5rem;
       height: 1.5rem;
-    }
   }
-}
 
 button,
 input[type="submit"] {

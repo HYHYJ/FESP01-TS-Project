@@ -2,7 +2,7 @@ import "./todoUpdate.css";
 import axios from 'axios';
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
-import useUpdateTodoInfo2 from "../../apis/useUpdateTodoInfo";
+import useUpdateTodoInfo from "../../apis/useUpdateTodoInfo";
 import getId from "../../utils/getId";
 import useSelectTodoInfo from "../../apis/useSelectTodoInfo";
 
@@ -61,6 +61,7 @@ const TodoUpdate = async () => {
   // 수정 완료 버튼 - confirm
   const submit = document.createElement("input");
   submit.setAttribute("type", "submit");
+  submit.setAttribute("class", "updateButton");
   submit.setAttribute("value", "수정 완료");
   submit.addEventListener("click", handleUpdate);
 
@@ -84,7 +85,7 @@ const TodoUpdate = async () => {
     }
     if (confirm("할 일을 수정하시겠습니까?")) {
       //보류
-      useUpdateTodoInfo2({
+      useUpdateTodoInfo({
         _id: item._id,
         title: titleInput.value,
         content: contentInput.value,
