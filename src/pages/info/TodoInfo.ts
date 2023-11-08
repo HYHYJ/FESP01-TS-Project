@@ -1,4 +1,5 @@
 import "./todoInfo.css";
+import axios from "axios";
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import { linkTo } from "../../Router";
@@ -7,11 +8,11 @@ import getId from "../../utils/getId";
 import useSelectTodoInfo from "../../apis/useSelectTodoInfo";
 import useUpdateTodoInfo from "../../apis/useUpdateTodoInfo";
 
-const TodoInfo = async function () {
+const TodoInfo = async function (): Promise<HTMLElement> {
   //주소에서 id 가져오기
-  const ID = getId();
-  const data = await useSelectTodoInfo(ID);
-  const item = data.item;
+  const ID: string | null = getId();
+  const data: TodoInfo = await useSelectTodoInfo(ID);
+  const item: TodoInfoItem = data.item;
 
   //page
   const page = document.createElement("div");
@@ -20,7 +21,6 @@ const TodoInfo = async function () {
 
   //본문
   const main = document.createElement("main");
-
   const infoContentsSection = document.createElement("section");
   const infoButtonsSection = document.createElement("section");
   infoContentsSection.id = "info-contents-section";
@@ -29,18 +29,21 @@ const TodoInfo = async function () {
   main.appendChild(infoButtonsSection);
 
   //할 일 제목
-  const infoTitle = document.createElement("h3");
+  const infoTitle = document.createElement("h2");
   infoTitle.id = "info-todo-title";
   infoTitle.textContent = `할 일 : ${item.title}`;
   infoContentsSection.appendChild(infoTitle);
 
   //상세 내용
-  const infoContentTitle = document.createElement("label");
-  infoContentTitle.for = "info-todo-content";
+  const infoContentTitle: HTMLElement = document.createElement("h3"); // label 이였음
   infoContentTitle.textContent = "상세 내용";
+  // infoContentTitle.setAttribute("for", "info-todo-label");
+  // infoContentTitle.for = "info-todo-content";
+
   const infoContent = document.createElement("p");
-  infoContent.id = "info-todo-content";
-  infoContent.textContent = item.content;
+  // infoContent.id = "info-todo-content";
+  infoContent.setAttribute("id", "info-todo-content");
+  infoContent.textContent = item.content as string;
   infoContentsSection.appendChild(infoContentTitle);
   infoContentsSection.appendChild(infoContent);
 
@@ -60,18 +63,18 @@ const TodoInfo = async function () {
   const checkboxDetail = document.createElement("input");
   checkboxDetail.setAttribute("id", "checkbox");
   checkboxDetail.type = "checkbox";
-  checkboxDetail.checked = item.done;
+
+  checkboxDetail.checked = item.done as boolean;
   infoContentsSection.appendChild(checkboxDetail);
   checkboxDetail.addEventListener("click", () =>
-    useUpdateTodoInfo({ ...item, done: checkboxDetail.checked })
+    useUpdateTodoInfo({ ...(item as TodoItem), done: checkboxDetail.checked })
   );
-
   //수정하기 버튼
   const btnModify = document.createElement("button");
   btnModify.textContent = "수정";
   btnModify.id = "info-btn-modify";
   infoButtonsSection.appendChild(btnModify);
-  btnModify.addEventListener("click", function (event) {
+  btnModify.addEventListener("click", function (event: MouseEvent) {
     event.preventDefault();
     linkTo(`update?_id=${ID}`);
   });
@@ -81,7 +84,7 @@ const TodoInfo = async function () {
   btnDelete.textContent = "삭제";
   btnDelete.id = "info-btn-delete";
   infoButtonsSection.appendChild(btnDelete);
-  btnDelete.addEventListener("click", function (event) {
+  btnDelete.addEventListener("click", function (event: MouseEvent) {
     event.preventDefault();
     if (confirm("삭제하시겠습니까?")) {
       axios.delete(`http://localhost:33088/api/todolist/${ID}`);
@@ -93,7 +96,8 @@ const TodoInfo = async function () {
   const btnGoHome = document.createElement("button");
   btnGoHome.textContent = "홈으로 이동";
   btnGoHome.id = "info-btn-home";
-  btnGoHome.onclick = () => {
+  btnGoHome.onclick = (event: MouseEvent) => {
+    event.preventDefault();
     linkTo("/");
   };
   infoButtonsSection.appendChild(btnGoHome);
