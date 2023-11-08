@@ -53,8 +53,8 @@
   padding: 20px;
   margin: 20px;
 }
-.list #content-done h3,
-.list #content-not-done h3 {
+.list #content-done h2,
+.list #content-not-done h2 {
   text-align: center;
   font-size: 20px;
   font-weight: 500;
@@ -67,15 +67,16 @@
   padding: 10px 0;
 }
 
-.list #content-done > div,
-.list #content-not-done > div {
+.list #content-done ul > div,
+.list #content-not-done ul > div {
   background-color: #ffffff;
   padding: 10px;
   border-radius: 8px;
   margin-bottom: 10px;
+  height: 100%;
 }
-.list #content-done > div a,
-.list #content-not-done > div a {
+.list #content-done ul > div a,
+.list #content-not-done ul > div a {
   text-decoration-line: none;
   color: #111;
 }
