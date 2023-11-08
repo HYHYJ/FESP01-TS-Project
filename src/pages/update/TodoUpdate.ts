@@ -1,4 +1,5 @@
 import "./todoUpdate.css";
+import axios from 'axios';
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import useUpdateTodoInfo from "../../apis/useUpdateTodoInfo";
@@ -6,10 +7,10 @@ import getId from "../../utils/getId";
 import useSelectTodoInfo from "../../apis/useSelectTodoInfo";
 
 const TodoUpdate = async () => {
-  const ID = getId();
-  const data = await useSelectTodoInfo(ID);
-  const item = data.item;
-
+  const ID: string | null = getId();
+  const data: TodoInfo = await useSelectTodoInfo(ID);
+  const item: TodoInfoItem = data.item; 
+  
   const page = document.createElement("div");
   page.setAttribute("id", "page");
   page.setAttribute("class", "update");
@@ -30,7 +31,7 @@ const TodoUpdate = async () => {
   titleInput.setAttribute("name", "title-create");
   titleInput.setAttribute("placeholder", "할 일을 입력하세요.");
   titleInput.setAttribute("class", "title-update");
-  titleInput.setAttribute("value", item.title);
+  titleInput.setAttribute("value", item.title as string);
   formUpdate.appendChild(titleDiv);
   formUpdate.appendChild(titleInput);
 
@@ -43,7 +44,7 @@ const TodoUpdate = async () => {
   contentInput.setAttribute("name", "content-create");
   contentInput.setAttribute("placeholder", "상세 내용을 입력하세요.");
   contentInput.setAttribute("class", "content-update");
-  contentInput.textContent = item.content;
+  contentInput.textContent = item.content as string;
   formUpdate.appendChild(contentDiv);
   formUpdate.appendChild(contentInput);
 
@@ -53,24 +54,28 @@ const TodoUpdate = async () => {
   checkbox.setAttribute("type", "checkbox");
   checkbox.setAttribute("name", "checkbox");
   checkbox.setAttribute("class", "checkbox");
-  checkbox.setAttribute("checked", false);
-  checkbox.checked = item.done;
+  checkbox.checked = item.done as boolean;
+  
   formUpdate.appendChild(checkbox);
 
   // 수정 완료 버튼 - confirm
   const submit = document.createElement("input");
   submit.setAttribute("type", "submit");
+  submit.setAttribute("class", "updateButton");
   submit.setAttribute("value", "수정 완료");
   submit.addEventListener("click", handleUpdate);
 
   formUpdate.appendChild(submit);
 
-  function handleUpdate(e) {
+  function handleUpdate(e:MouseEvent) {
     e.preventDefault();
 
-    const titleValue = document.querySelector("#title-create").value;
-    const contentValue = document.querySelector("#content-create").value;
-
+    //보류
+    const titleElement= document.querySelector("#title-create") as HTMLInputElement;
+    const titleValue = titleElement.value;
+    const contentElement = document.querySelector("#content-create")as HTMLInputElement;
+    const contentValue = contentElement.value;
+    
     //입력값 확인(이중확인)
     if (titleValue === "") {
       alert("제목을 입력하세요");
@@ -79,8 +84,9 @@ const TodoUpdate = async () => {
       alert("상세 내용을 입력하세요");
     }
     if (confirm("할 일을 수정하시겠습니까?")) {
+      //보류
       useUpdateTodoInfo({
-        ...item,
+        _id: item._id,
         title: titleInput.value,
         content: contentInput.value,
         done: checkbox.checked,
@@ -96,7 +102,7 @@ const TodoUpdate = async () => {
     const contentValue = contentInput.value;
 
     if (titleValue === "" || contentValue === "") {
-      submit.setAttribute("disabled", true);
+      submit.setAttribute("disabled", 'true' );
     } else {
       submit.removeAttribute("disabled");
     }

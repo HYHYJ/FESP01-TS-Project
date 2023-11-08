@@ -22,3 +22,10 @@ interface TodoResponse {
   ok: number;
   item: TodoItem;
 }
+
+
+interface TodoInfo extends TodoItem {
+  item: object;
+}
+// TodoItem을 옵셔널 프로퍼티로 만듬.
+type TodoInfoItem = Partial<TodoItem>;
