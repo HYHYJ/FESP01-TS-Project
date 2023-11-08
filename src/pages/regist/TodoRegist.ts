@@ -2,17 +2,23 @@ import "./todoRegist.css";
 import Header from "../../layout/Header";
 import Footer from "../../layout/Footer";
 import { linkTo } from "../../Router";
+import axios from "axios";
 
 const TodoRegist = function () {
   const page = document.createElement("div");
   page.setAttribute("id", "page");
   page.setAttribute("class", "regist");
 
-  const handleRegist = (e) => {
+  const handleRegist = (e: MouseEvent) => {
     e.preventDefault();
-
-    const titleValue = document.querySelector("#title-create").value;
-    const contentValue = document.querySelector("#content-create").value;
+    const titleElement = document.querySelector(
+      "#title-create"
+    ) as HTMLInputElement;
+    const titleValue = titleElement.value;
+    const contetElement = document.querySelector(
+      "#content-create"
+    ) as HTMLInputElement;
+    const contentValue = contetElement.value;
 
     //입력값 확인(이중확인)
     if (titleValue === "") {
@@ -72,7 +78,7 @@ const TodoRegist = function () {
     const contentValue = contentInput.value;
 
     if (titleValue === "" || contentValue === "") {
-      submit.setAttribute("disabled", true);
+      submit.disabled = true;
     } else {
       submit.removeAttribute("disabled");
     }
@@ -80,9 +86,9 @@ const TodoRegist = function () {
 
   // 생성하기 버튼: confirm 띄우기
   const submit = document.createElement("input");
-  submit.setAttribute("type", "submit");
-  submit.setAttribute("value", "등록");
-  submit.setAttribute("disabled", true);
+  submit.type = "submit";
+  submit.value = "등록";
+  submit.disabled = true;
   submit.addEventListener("click", handleRegist);
 
   // 취소하기 버튼: 뒤로가기 이벤트
